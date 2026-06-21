@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文本转手写图片生成器</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>✍️ 手写图片生成器</h1>
+            <p class="subtitle">模拟真人手写风格，支持多种手写体</p>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <div class="control-section">
+                    <h3>📝 输入文本</h3>
+                    <textarea id="textInput" placeholder="请输入要转换的文本...">人生若只如初见，何事秋风悲画扇。
+等闲变却故人心，却道故人心易变。
+骊山语罢清宵半，泪雨霖铃终不怨。
+何如薄幸锦衣郎，比翼连枝当日愿。</textarea>
+                </div>
+
+                <div class="control-section">
+                    <h3>🎨 手写风格</h3>
+                    <div class="style-selector">
+                        <button class="style-btn active" data-style="kaishu">楷书</button>
+                        <button class="style-btn" data-style="xingshu">行书</button>
+                        <button class="style-btn" data-style="caoshu">草书</button>
+                        <button class="style-btn" data-style="shoujie">瘦金体</button>
+                        <button class="style-btn" data-style="custom">自定义字体</button>
+                    </div>
+                    <div class="font-upload" id="fontUploadArea">
+                        <label for="fontFile" class="upload-label">
+                            <span>📂 上传TTF字体文件</span>
+                        </label>
+                        <input type="file" id="fontFile" accept=".ttf,.otf" style="display:none">
+                        <p class="font-name" id="fontName"></p>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h3>⚙️ 参数调节</h3>
+                    
+                    <div class="param-group">
+                        <label>
+                            <span>字体大小</span>
+                            <span class="value" id="fontSizeValue">32px</span>
+                        </label>
+                        <input type="range" id="fontSize" min="16" max="64" value="32">
+                    </div>
+
+                    <div class="param-group">
+                        <label>
+                            <span>字间距</span>
+                            <span class="value" id="charSpacingValue">2px</span>
+                        </label>
+                        <input type="range" id="charSpacing" min="-5" max="20" value="2">
+                    </div>
+
+                    <div class="param-group">
+                        <label>
+                            <span>行高</span>
+                            <span class="value" id="lineHeightValue">1.8</span>
+                        </label>
+                        <input type="range" id="lineHeight" min="1.0" max="3.0" step="0.1" value="1.8">
+                    </div>
+
+                    <div class="param-group">
+                        <label>
+                            <span>倾斜角度</span>
+                            <span class="value" id="slantAngleValue">0°</span>
+                        </label>
+                        <input type="range" id="slantAngle" min="-15" max="15" step="0.5" value="0">
+                    </div>
+
+                    <div class="param-group">
+                        <label>
+                            <span>墨迹浓度</span>
+                            <span class="value" id="inkDensityValue">80%</span>
+                        </label>
+                        <input type="range" id="inkDensity" min="20" max="100" value="80">
+                    </div>
+
+                    <div class="param-group">
+                        <label>
+                            <span>随机偏移</span>
+                            <span class="value" id="randomOffsetValue">3px</span>
+                        </label>
+                        <input type="range" id="randomOffset" min="0" max="10" value="3">
+                    </div>
+
+                    <div class="param-group">
+                        <label>
+                            <span>笔画噪点</span>
+                            <span class="value" id="strokeNoiseValue">30%</span>
+                        </label>
+                        <input type="range" id="strokeNoise" min="0" max="100" value="30">
+                    </div>
+
+                    <div class="param-group">
+                        <label>
+                            <span>纸张颜色</span>
+                        </label>
+                        <div class="color-options">
+                            <button class="color-btn active" data-color="#faf8f0">米黄</button>
+                            <button class="color-btn" data-color="#ffffff">白色</button>
+                            <button class="color-btn" data-color="#f5e6d3">仿古</button>
+                            <button class="color-btn" data-color="#e8e0d0">牛皮纸</button>
+                        </div>
+                    </div>
+
+                    <div class="param-group">
+                        <label>
+                            <span>墨迹颜色</span>
+                        </label>
+                        <div class="color-options">
+                            <button class="ink-btn active" data-color="#2c2c2c">墨黑</button>
+                            <button class="ink-btn" data-color="#4a3728">墨棕</button>
+                            <button class="ink-btn" data-color="#8b0000">朱红</button>
+                            <button class="ink-btn" data-color="#1e3a5f">藏青</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h3>📄 页面设置</h3>
+                    <div class="param-group">
+                        <label>
+                            <span>页面宽度</span>
+                            <span class="value" id="pageWidthValue">800px</span>
+                        </label>
+                        <input type="range" id="pageWidth" min="400" max="1200" step="50" value="800">
+                    </div>
+
+                    <div class="param-group">
+                        <label>
+                            <span>页面高度</span>
+                            <span class="value" id="pageHeightValue">1150px</span>
+                        </label>
+                        <input type="range" id="pageHeight" min="600" max="2000" step="50" value="1150">
+                    </div>
+
+                    <div class="param-group">
+                        <label>
+                            <span>边距</span>
+                            <span class="value" id="paddingValue">60px</span>
+                        </label>
+                        <input type="range" id="padding" min="20" max="100" value="60">
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <button id="generateBtn" class="btn-primary">🎯 生成预览</button>
+                    <button id="exportBtn" class="btn-secondary">💾 导出当前页</button>
+                    <button id="exportAllBtn" class="btn-secondary">📚 导出分页PNG</button>
+                    <button id="exportLongBtn" class="btn-secondary">🖼️ 导出长图</button>
+                </div>
+
+                <div class="control-section">
+                    <div class="page-info">
+                        <span id="pageInfo">第 1 页 / 共 1 页</span>
+                        <div class="page-nav">
+                        <button id="prevPage" class="btn-small">上一页</button>
+                        <button id="nextPage" class="btn-small">下一页</button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="preview-area">
+                <div class="canvas-container" id="canvasContainer">
+                    <canvas id="previewCanvas"></canvas>
+                </div>
+                <div class="loading" id="loading" style="display:none">
+                    <div class="spinner"></div>
+                    <p>正在生成...</p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/fontLoader.js"></script>
+    <script src="js/styles.js"></script>
+    <script src="js/paperEffects.js"></script>
+    <script src="js/textEffects.js"></script>
+    <script src="js/exportManager.js"></script>
+    <script src="js/fontManager.js"></script>
+    <script src="js/eventHandlers.js"></script>
+    <script src="js/exportHandlers.js"></script>
+    <script src="js/renderer.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
